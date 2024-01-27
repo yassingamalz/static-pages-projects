@@ -20,10 +20,10 @@
     }
 
     .digit-card {
-      width: 60px;
-      height: 80px;
-      background-color: white;
-      color: #000;
+      width: 80px;
+      height: 180px;
+      background-color: #001427;
+      color: #fff;
       border-radius: 10px;
       display: flex;
       align-items: center;
@@ -80,18 +80,14 @@
       const minutes = Math.floor((timeDifference % (60 * 60 * 1000)) / (60 * 1000));
       const seconds = Math.floor((timeDifference % (60 * 1000)) / 1000);
 
-      document.getElementById('hour-ten').innerText = padZero(Math.floor(hours / 10));
-      document.getElementById('hour-unit').innerText = padZero(hours % 10);
-      document.getElementById('minute-ten').innerText = padZero(Math.floor(minutes / 10));
-      document.getElementById('minute-unit').innerText = padZero(minutes % 10);
-      document.getElementById('second-ten').innerText = padZero(Math.floor(seconds / 10));
-      document.getElementById('second-unit').innerText = padZero(seconds % 10);
+      document.getElementById('hour-ten').innerText = hours >= 10 ? Math.floor(hours / 10) : '';
+      document.getElementById('hour-unit').innerText = hours % 10;
+      document.getElementById('minute-ten').innerText = minutes >= 10 ? Math.floor(minutes / 10) : '0';
+      document.getElementById('minute-unit').innerText = minutes % 10;
+      document.getElementById('second-ten').innerText = seconds >= 10 ? Math.floor(seconds / 10) : '0';
+      document.getElementById('second-unit').innerText = seconds % 10;
 
       setTimeout(updateClock, 1000);
-    }
-
-    function padZero(num) {
-      return num < 10 ? `0${num}` : num;
     }
 
     updateClock();
