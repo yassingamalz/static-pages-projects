@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+background-color: #8EC5FC;
+background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+    }
+
+    #clock {
+      display: flex;
+    }
+
+
+    .digit-card {
+      width: 60px;
+      height: 80px;
+      background-color: white ; /* Green color */
+      color: #black;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em; /* Increased font size */
+      font-weight: bold;
+      margin: 0 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+  <title>30-Hour Clock</title>
+</head>
+<body>
+  <div id="clock">
+    <div class="digit-card" id="hour-ten"></div>
+    <div class="digit-card" id="hour-unit"></div>
+    <div class="digit-card">:</div>
+    <div class="digit-card" id="minute-ten"></div>
+    <div class="digit-card" id="minute-unit"></div>
+    <div class="digit-card">:</div>
+    <div class="digit-card" id="second-ten"></div>
+    <div class="digit-card" id="second-unit"></div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const sixAM = new Date(now);
+      sixAM.setHours(6, 0, 0, 0);
+
+      let timeDifference = now - sixAM;
+
+      if (timeDifference < 0) {
+        // If current time is before 6 am, set the clock to 30 hours ago
+        timeDifference = -(6 * 60 * 60 * 1000) + timeDifference;
+      }
+
+      const hours = Math.floor(timeDifference / (60 * 60 * 1000));
+      const minutes = Math.floor((timeDifference % (60 * 60 * 1000)) / (60 * 1000));
+      const seconds = Math.floor((timeDifference % (60 * 1000)) / 1000);
+
+      document.getElementById('hour-ten').innerText = padZero(Math.floor(hours / 10));
+      document.getElementById('hour-unit').innerText = padZero(hours % 10);
+      document.getElementById('minute-ten').innerText = padZero(Math.floor(minutes / 10));
+      document.getElementById('minute-unit').innerText = padZero(minutes % 10);
+      document.getElementById('second-ten').innerText = padZero(Math.floor(seconds / 10));
+      document.getElementById('second-unit').innerText = padZero(seconds % 10);
+
+      setTimeout(updateClock, 1000); // Update every second
+    }
+
+    function padZero(num) {
+      return num < 10 ? `0${num}` : num;
+    }
+
+    // Initial call to set up the clock
+    updateClock();
+  </script>
+</body>
+</html>
