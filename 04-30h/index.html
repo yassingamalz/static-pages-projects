@@ -11,28 +11,43 @@
       height: 100vh;
       margin: 0;
       font-family: Arial, sans-serif;
-background-color: #8EC5FC;
-background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+      background-color: #8EC5FC;
+      background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
     }
 
     #clock {
       display: flex;
     }
 
-
     .digit-card {
       width: 60px;
       height: 80px;
-      background-color: white ; /* Green color */
-      color: #black;
+      background-color: white;
+      color: #000;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2em; /* Increased font size */
+      font-size: 2em;
       font-weight: bold;
       margin: 0 5px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media only screen and (max-width: 600px) {
+      .digit-card {
+        width: 40px;
+        height: 60px;
+        font-size: 1.5em;
+      }
+    }
+
+    @media only screen and (max-width: 400px) {
+      .digit-card {
+        width: 30px;
+        height: 40px;
+        font-size: 1em;
+      }
     }
   </style>
   <title>30-Hour Clock</title>
@@ -58,7 +73,6 @@ background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
       let timeDifference = now - sixAM;
 
       if (timeDifference < 0) {
-        // If current time is before 6 am, set the clock to 30 hours ago
         timeDifference = -(6 * 60 * 60 * 1000) + timeDifference;
       }
 
@@ -73,14 +87,13 @@ background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
       document.getElementById('second-ten').innerText = padZero(Math.floor(seconds / 10));
       document.getElementById('second-unit').innerText = padZero(seconds % 10);
 
-      setTimeout(updateClock, 1000); // Update every second
+      setTimeout(updateClock, 1000);
     }
 
     function padZero(num) {
       return num < 10 ? `0${num}` : num;
     }
 
-    // Initial call to set up the clock
     updateClock();
   </script>
 </body>
