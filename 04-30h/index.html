@@ -65,17 +65,22 @@
   </div>
 
   <script>
-  // Store the initial real-world hour for reference
-  let initialRealHour = new Date().getHours();
+    // Store the initial custom hours (0 for the beginning of a 30-hour day)
+    let customHours = 0;
 
-  function updateClock() {
-    const now = new Date();
+    function updateClock() {
+      const now = new Date();
 
-    // Calculate custom hours based on initial real-world hour
-    let customHours = (now.getHours() - initialRealHour + 30) % 30;
+      // If it's before 12 AM (real-world time), update based on real time
+      if (now.getHours() < 12) {
+        customHours = now.getHours() % 30; // Align with real-world hours until 12 AM
+      } else {
+        // Otherwise, keep counting in 30-hour increments
+        customHours = (customHours + 1) % 30;
+      }
 
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
 	
     document.getElementById('hour-ten').innerText = customHours >= 10 ? Math.floor(customHours / 10) : '';
     document.getElementById('hour-unit').innerText = customHours % 10;
