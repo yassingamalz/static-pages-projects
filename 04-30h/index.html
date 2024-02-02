@@ -65,32 +65,29 @@
   </div>
 
   <script>
-    function updateClock() {
-      const now = new Date();
-      const sixAM = new Date(now);
-      sixAM.setHours(6, 0, 0, 0);
+  // Store the initial real-world hour for reference
+  let initialRealHour = new Date().getHours();
 
-      let timeDifference = now - sixAM;
+  function updateClock() {
+    const now = new Date();
 
-      if (timeDifference < 0) {
-        timeDifference = -(6 * 60 * 60 * 1000) + timeDifference;
-      }
+    // Calculate custom hours based on initial real-world hour
+    let customHours = (now.getHours() - initialRealHour + 30) % 30;
 
-      const hours = Math.floor(timeDifference / (60 * 60 * 1000));
-      const minutes = Math.floor((timeDifference % (60 * 60 * 1000)) / (60 * 1000));
-      const seconds = Math.floor((timeDifference % (60 * 1000)) / 1000);
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+	
+    document.getElementById('hour-ten').innerText = customHours >= 10 ? Math.floor(customHours / 10) : '';
+    document.getElementById('hour-unit').innerText = customHours % 10;
+    document.getElementById('minute-ten').innerText = minutes >= 10 ? Math.floor(minutes / 10) : '0';
+    document.getElementById('minute-unit').innerText = minutes % 10;
+    document.getElementById('second-ten').innerText = seconds >= 10 ? Math.floor(seconds / 10) : '0';
+    document.getElementById('second-unit').innerText = seconds % 10;
 
-      document.getElementById('hour-ten').innerText = hours >= 10 ? Math.floor(hours / 10) : '';
-      document.getElementById('hour-unit').innerText = hours % 10;
-      document.getElementById('minute-ten').innerText = minutes >= 10 ? Math.floor(minutes / 10) : '0';
-      document.getElementById('minute-unit').innerText = minutes % 10;
-      document.getElementById('second-ten').innerText = seconds >= 10 ? Math.floor(seconds / 10) : '0';
-      document.getElementById('second-unit').innerText = seconds % 10;
+    setTimeout(updateClock, 1000);
+  }
 
-      setTimeout(updateClock, 1000);
-    }
-
-    updateClock();
-  </script>
+  updateClock();
+</script>
 </body>
 </html>
