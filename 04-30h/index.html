@@ -65,37 +65,72 @@
   </div>
 
   <script>
-    let customHours = 0;
-    let lastUpdate = new Date(); // Track the last update time
+const clockElements = document.querySelectorAll('.digit-card');
+const hourTenElement = document.getElementById('hour-ten');
+const hourUnitElement = document.getElementById('hour-unit');
+const minuteTenElement = document.getElementById('minute-ten');
+const minuteUnitElement = document.getElementById('minute-unit');
+const secondTenElement = document.getElementById('second-ten');
+const secondUnitElement = document.getElementById('second-unit');
 
-    function updateClock() {
-      const now = new Date();
+let hours = 0;
+let minutes = 0;
+let seconds = 0;
+let totalSeconds = 0;
+let initialTimeSet = false; // Flag to track if initial time is set
 
-      // If it's before 12 AM (real-world time), update based on real time
-      if (now.getHours() < 12) {
-        customHours = now.getHours() % 30; // Align with real-world hours until 12 AM
-      } else {
-        // Otherwise, keep counting in 30-hour increments if 30 hours have passed
-        if (now - lastUpdate >= 30 * 60 * 60 * 1000) { // 30 hours in milliseconds
-          customHours = (customHours + 1) % 30;
-          lastUpdate = now; // Update last update time
-        }
-      }
+// Function to update the clock display
+function updateClock() {
+  const hoursToDisplay = hours; // Keep hours within 0-29 for 30-hour clock
+  const formattedHours = hoursToDisplay.toString().padStart(2, '0');
+  hourTenElement.textContent = formattedHours[0];
+  hourUnitElement.textContent = formattedHours[1];
 
-      const minutes = now.getMinutes();
-	
-    document.getElementById('hour-ten').innerText = customHours >= 10 ? Math.floor(customHours / 10) : '';
-    document.getElementById('hour-unit').innerText = customHours % 10;
-    document.getElementById('minute-ten').innerText = minutes >= 10 ? Math.floor(minutes / 10) : '0';
-    document.getElementById('minute-unit').innerText = minutes % 10;
-    document.getElementById('second-ten').innerText = seconds >= 10 ? Math.floor(seconds / 10) : '0';
-    document.getElementById('second-unit').innerText = seconds % 10;
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+  minuteTenElement.textContent = formattedMinutes[0];
+  minuteUnitElement.textContent = formattedMinutes[1];
 
-    setTimeout(updateClock, 1000);
+  const formattedSeconds = seconds.toString().padStart(2, '0');
+  secondTenElement.textContent = formattedSeconds[0];
+  secondUnitElement.textContent = formattedSeconds[1];
+}
+
+// Function to increment time for the 30-hour clock
+function incrementTime() {
+  if (!initialTimeSet) {
+    console.log("first time");
+    // Get current time for initial launch
+    const currentDate = new Date();
+    hours = currentDate.getHours(); // Adjust for 30-hour format on first launch
+    minutes = currentDate.getMinutes();
+    seconds = currentDate.getSeconds();
+    totalSeconds = hours * 3600 + minutes * 60 + seconds;
+    initialTimeSet = true; // Mark initial time set
+  }
+
+  seconds++;
+  totalSeconds++;
+
+  if (seconds === 60) {
+    seconds = 0;
+    minutes++;
+  }
+
+  if (minutes === 60) {
+    minutes = 0;
+    hours++;
+  }
+
+  // Handle 30-hour rollover
+  if (hours === 30) {
+    hours = 0;
   }
 
   updateClock();
-  setInterval(updateClock, 30 * 60 * 60 * 1000); // Update every 30 hours
+}
+
+// Start the clock
+setInterval(incrementTime, 1000); // Update every second
 </script>
 </body>
 </html>
