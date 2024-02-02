@@ -65,8 +65,8 @@
   </div>
 
   <script>
-    // Store the initial custom hours (0 for the beginning of a 30-hour day)
     let customHours = 0;
+    let lastUpdate = new Date(); // Track the last update time
 
     function updateClock() {
       const now = new Date();
@@ -75,12 +75,14 @@
       if (now.getHours() < 12) {
         customHours = now.getHours() % 30; // Align with real-world hours until 12 AM
       } else {
-        // Otherwise, keep counting in 30-hour increments
-        customHours = (customHours + 1) % 30;
+        // Otherwise, keep counting in 30-hour increments if 30 hours have passed
+        if (now - lastUpdate >= 30 * 60 * 60 * 1000) { // 30 hours in milliseconds
+          customHours = (customHours + 1) % 30;
+          lastUpdate = now; // Update last update time
+        }
       }
 
       const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
 	
     document.getElementById('hour-ten').innerText = customHours >= 10 ? Math.floor(customHours / 10) : '';
     document.getElementById('hour-unit').innerText = customHours % 10;
@@ -93,6 +95,7 @@
   }
 
   updateClock();
+  setInterval(updateClock, 30 * 60 * 60 * 1000); // Update every 30 hours
 </script>
 </body>
 </html>
